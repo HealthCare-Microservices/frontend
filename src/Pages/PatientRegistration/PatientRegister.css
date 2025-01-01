@@ -1,0 +1,76 @@
+.registration-page {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #86a8e7, #5ffbf1, #f8a5c2, #f6d1e6);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .registration-container {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 400px;
+    text-align: center;
+  }
+  
+  .registration-form h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  label {
+    color: white;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid white;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: white;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5a98f2;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #467ec0;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  

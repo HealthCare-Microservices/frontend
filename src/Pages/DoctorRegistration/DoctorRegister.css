@@ -1,0 +1,96 @@
+/* Full-page layout styles */
+.registration-page {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #86a8e7, #5ffbf1, #f8a5c2, #f6d1e6);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Card-like container for the registration form */
+  .registration-container {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 400px;
+    text-align: center;
+  }
+  
+  /* Header styling for the form */
+  .registration-form h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  
+  /* Group styles for each form field */
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  /* Label styling for form fields */
+  label {
+    color: white;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Input fields styling */
+  input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    color: white;
+    outline: none;
+    font-size: 1rem;
+  }
+  
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5a98f2;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #467ec0;
+  }
+  
+  /* Error message styling */
+  .text-danger {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+    display: block;
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .registration-container {
+      width: 90%;
+      padding: 20px;
+    }
+  }
+  
+  
+  

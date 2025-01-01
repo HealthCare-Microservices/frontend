@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./css/login.css"; // External CSS file for styles
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,7 +21,6 @@ const Login = () => {
       [name]: updatedValue,
     });
 
-    // Validation during change
     const newErrors = { ...errors };
 
     if (name === "username" && !updatedValue) {
@@ -66,6 +66,8 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form submitted successfully:", formData);
+      // Redirect to dashboard after successful login
+      navigate("/dashboard");
     }
   };
 
@@ -119,7 +121,8 @@ const Login = () => {
             Login
           </button>
           <p className="register-link">
-            Don’t have an account? <Link to={"/register"}>Register here</Link>
+            Don’t have an account?{" "}
+            <Link to={"/register/patient"}>Register here</Link>
           </p>
         </form>
       </div>
