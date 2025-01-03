@@ -1,44 +1,37 @@
 import React, { useState } from "react";
 import "./css/login.css"; // External CSS file for styles
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import apiClient from "../../api/axios"; // Axios instance for backend calls
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
-    termsAccepted: false,
   });
 
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const updatedValue = type === "checkbox" ? checked : value;
-
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: updatedValue,
+      [name]: value,
     });
 
     const newErrors = { ...errors };
 
-    if (name === "username" && !updatedValue) {
-      newErrors.username = "Username is required";
-    } else if (name === "username") {
-      delete newErrors.username;
+    if (name === "email" && !value) {
+      newErrors.email = "Email is required";
+    } else if (name === "email") {
+      delete newErrors.email;
     }
 
-    if (name === "password" && !updatedValue) {
+    if (name === "password" && !value) {
       newErrors.password = "Password is required";
     } else if (name === "password") {
       delete newErrors.password;
-    }
-
-    if (name === "termsAccepted" && !updatedValue) {
-      newErrors.termsAccepted = "You must accept the terms and conditions";
-    } else if (name === "termsAccepted") {
-      delete newErrors.termsAccepted;
     }
 
     setErrors(newErrors);
@@ -47,14 +40,11 @@ const Login = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username) {
-      newErrors.username = "Username is required";
+    if (!formData.email) {
+      newErrors.email = "Email is required";
     }
     if (!formData.password) {
       newErrors.password = "Password is required";
-    }
-    if (!formData.termsAccepted) {
-      newErrors.termsAccepted = "You must accept the terms and conditions";
     }
 
     setErrors(newErrors);
@@ -62,12 +52,28 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted successfully:", formData);
-      // Redirect to dashboard after successful login
-      navigate("/dashboard");
+      try {
+        const response = await apiClient.post(
+          "/api/v1/doctors/login",
+          null,
+          { params: { email: formData.email, password: formData.password } }
+        );
+        console.log("Login Response:", response.data);
+        setSuccessMessage("Login successful!");
+
+        // Redirect to doctor dashboard
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      } catch (error) {
+        setErrors({
+          apiError:
+            error.response?.data || "Invalid email or password. Please try again.",
+        });
+      }
     }
   };
 
@@ -75,20 +81,21 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h2>Login</h2>
+          <h2>Doctor Login</h2>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+          {errors.apiError && <p className="error-message">{errors.apiError}</p>}
+
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder="Enter Username"
+              placeholder="Enter Email"
             />
-            {errors.username && (
-              <span className="error">{errors.username}</span>
-            )}
+            {errors.email && <span className="error">{errors.email}</span>}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -104,25 +111,12 @@ const Login = () => {
               <span className="error">{errors.password}</span>
             )}
           </div>
-          <div className="form-group terms">
-            <input
-              type="checkbox"
-              id="termsAccepted"
-              name="termsAccepted"
-              checked={formData.termsAccepted}
-              onChange={handleChange}
-            />
-            <label htmlFor="termsAccepted">Accept Terms and Conditions</label>
-            {errors.termsAccepted && (
-              <span className="error">{errors.termsAccepted}</span>
-            )}
-          </div>
           <button type="submit" className="login-button">
             Login
           </button>
           <p className="register-link">
             Don’t have an account?{" "}
-            <Link to={"/register/patient"}>Register here</Link>
+            <Link to={"/register/doctor"}>Register here</Link>
           </p>
         </form>
       </div>
@@ -131,5 +125,6 @@ const Login = () => {
 };
 
 export default Login;
+
 
 /* CSS for the Login component */
