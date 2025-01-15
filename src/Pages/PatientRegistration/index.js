@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PatientRegister.css";
-import apiClient from "../../api/axios";
+import { apiClientPatient } from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 
 const PatientRegister = () => {
@@ -37,13 +37,13 @@ const PatientRegister = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await apiClient.post("/api/v1/patients", formData);
+        const response = await apiClientPatient.post("/api/v1/patients", formData);
         console.log("API Response:", response);
         setSuccessMessage("Patient registered successfully!");
         setErrors({});
-        setTimeout(() => {
-          navigate("/"); // Redirect to login
-        }, 2000);
+        // setTimeout(() => {
+          navigate("/dashboard"); // Redirect to login
+        // }, 2000);
       } catch (error) {
         if (error.response && error.response.data.errors) {
           setErrors(error.response.data.errors); // Display field errors
@@ -53,6 +53,12 @@ const PatientRegister = () => {
       }
     }
   };
+
+  useEffect(() => {
+      if(!localStorage.getItem("id")){
+        navigate("/")
+      }
+    }, [])
 
   return (
     <div className="registration-page">

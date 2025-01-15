@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/login.css"; // External CSS file for styles
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import apiClient from "../../api/axios"; // Axios instance for backend calls
+import { apiClientDoctor } from "../../api/axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -56,12 +56,13 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await apiClient.post(
-          "/api/v1/doctors/login",
-          null,
-          { params: { email: formData.email, password: formData.password } }
-        );
+        const response = await apiClientDoctor.post("/api/v1/doctors/login", null, {
+          params: { email: formData.email, password: formData.password },
+        });
         console.log("Login Response:", response.data);
+        if(response.data){
+          localStorage.setItem("id",response.data)
+        }
         setSuccessMessage("Login successful!");
 
         // Redirect to doctor dashboard
@@ -71,19 +72,30 @@ const Login = () => {
       } catch (error) {
         setErrors({
           apiError:
-            error.response?.data || "Invalid email or password. Please try again.",
+            error.response?.data ||
+            "Invalid email or password. Please try again.",
         });
       }
     }
   };
 
+  useEffect(() => {
+    if(localStorage.getItem("id")){
+      navigate("/dashboard")
+    }
+  }, [])
+  
   return (
     <div className="login-page">
       <div className="login-container">
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Doctor Login</h2>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-          {errors.apiError && <p className="error-message">{errors.apiError}</p>}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
+          {errors.apiError && (
+            <p className="error-message">{errors.apiError}</p>
+          )}
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -125,6 +137,5 @@ const Login = () => {
 };
 
 export default Login;
-
 
 /* CSS for the Login component */

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import apiClient from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import "./DoctorRegister.css";
+import { apiClientDoctor } from "../../api/axios";
 
 const DoctorRegister = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ const DoctorRegister = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await apiClient.post("/api/v1/doctors", formData);
+        const response = await apiClientDoctor.post("/api/v1/doctors", formData);
         console.log("API Response:", response);
         setSuccessMessage("Doctor registered successfully!");
         setTimeout(() => {
